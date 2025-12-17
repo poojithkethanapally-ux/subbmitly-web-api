@@ -33,6 +33,8 @@ namespace Subbmitly.API
             // Add services to the container.
             builder.Services.AddScoped<IUserProfileService, UserProfileService>();
             builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+            builder.Services.AddScoped<ISubmissionService, SubmissionService>();
+            builder.Services.AddScoped<ISubmissionRepository, SubmissionRepository>();
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

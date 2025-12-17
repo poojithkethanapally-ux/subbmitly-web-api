@@ -53,5 +53,5 @@ public partial class Interview
 
     [ForeignKey("SubmissionId")]
     [InverseProperty("Interviews")]
-    public virtual CandidateSubmission Submission { get; set; } = null!;
+    public virtual Submission Submission { get; set; } = null!;
 }

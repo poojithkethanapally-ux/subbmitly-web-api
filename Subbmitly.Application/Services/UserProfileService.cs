@@ -19,7 +19,7 @@ namespace Subbmitly.Application.Services
             this.userProfileRepository = userProfileRepository;
         }
 
-        public async Task<List<User>> GetUserInfo()
+        public async Task<List<UserResponse>> GetUserInfo()
         {
             return await userProfileRepository.GetUserInfo();
         }

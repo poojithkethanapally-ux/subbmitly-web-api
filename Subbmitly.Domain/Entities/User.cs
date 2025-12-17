@@ -42,14 +42,14 @@ public partial class User
     [Unicode(false)]
     public string? ModifiedBy { get; set; }
 
-    [InverseProperty("Recruiter")]
-    public virtual ICollection<CandidateSubmission> CandidateSubmissions { get; set; } = new List<CandidateSubmission>();
-
     [InverseProperty("User")]
     public virtual ICollection<Candidate> Candidates { get; set; } = new List<Candidate>();
 
     [InverseProperty("User")]
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<Recruiter> Recruiters { get; set; } = new List<Recruiter>();
 
     [InverseProperty("User")]
     public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();

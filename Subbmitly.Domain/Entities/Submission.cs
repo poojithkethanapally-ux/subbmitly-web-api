@@ -6,8 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Subbmitly.Domain.Entities;
 
-[Table("CandidateSubmission")]
-public partial class CandidateSubmission
+public partial class Submission
 {
     [Key]
     [Column("submission_id")]
@@ -74,16 +73,36 @@ public partial class CandidateSubmission
     [Unicode(false)]
     public string? ModifiedBy { get; set; }
 
+    [Column("vendor_contact_name")]
+    [StringLength(200)]
+    [Unicode(false)]
+    public string? VendorContactName { get; set; }
+
+    [Column("vendor_contact_email")]
+    [StringLength(200)]
+    [Unicode(false)]
+    public string? VendorContactEmail { get; set; }
+
+    [Column("vendor_contact_phone")]
+    [StringLength(200)]
+    [Unicode(false)]
+    public string? VendorContactPhone { get; set; }
+
+    [Column("candidate_location")]
+    [StringLength(200)]
+    [Unicode(false)]
+    public string? CandidateLocation { get; set; }
+
     [ForeignKey("CandidateId")]
-    [InverseProperty("CandidateSubmissions")]
+    [InverseProperty("Submissions")]
     public virtual Candidate Candidate { get; set; } = null!;
 
     [InverseProperty("Submission")]
     public virtual ICollection<Interview> Interviews { get; set; } = new List<Interview>();
 
     [ForeignKey("RecruiterId")]
-    [InverseProperty("CandidateSubmissions")]
-    public virtual User Recruiter { get; set; } = null!;
+    [InverseProperty("Submissions")]
+    public virtual Recruiter Recruiter { get; set; } = null!;
 
     [InverseProperty("Submission")]
     public virtual ICollection<SubmissionStatusHistory> SubmissionStatusHistories { get; set; } = new List<SubmissionStatusHistory>();

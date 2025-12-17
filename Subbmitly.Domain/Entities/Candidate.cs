@@ -60,10 +60,10 @@ public partial class Candidate
     public string? ModifiedBy { get; set; }
 
     [InverseProperty("Candidate")]
-    public virtual ICollection<CandidateSubmission> CandidateSubmissions { get; set; } = new List<CandidateSubmission>();
+    public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
     [InverseProperty("Candidate")]
-    public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
+    public virtual ICollection<Submission> Submissions { get; set; } = new List<Submission>();
 
     [ForeignKey("UserId")]
     [InverseProperty("Candidates")]

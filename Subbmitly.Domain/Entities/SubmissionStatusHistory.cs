@@ -50,5 +50,5 @@ public partial class SubmissionStatusHistory
 
     [ForeignKey("SubmissionId")]
     [InverseProperty("SubmissionStatusHistories")]
-    public virtual CandidateSubmission Submission { get; set; } = null!;
+    public virtual Submission Submission { get; set; } = null!;
 }

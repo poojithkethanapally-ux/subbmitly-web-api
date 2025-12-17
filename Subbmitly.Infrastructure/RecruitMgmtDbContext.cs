@@ -20,13 +20,15 @@ public partial class RecruitMgmtDbContext : DbContext
 
     public virtual DbSet<Candidate> Candidates { get; set; }
 
-    public virtual DbSet<CandidateSubmission> CandidateSubmissions { get; set; }
-
     public virtual DbSet<Interview> Interviews { get; set; }
 
     public virtual DbSet<Note> Notes { get; set; }
 
+    public virtual DbSet<Recruiter> Recruiters { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
+
+    public virtual DbSet<Submission> Submissions { get; set; }
 
     public virtual DbSet<SubmissionStatusHistory> SubmissionStatusHistories { get; set; }
 
@@ -58,22 +60,6 @@ public partial class RecruitMgmtDbContext : DbContext
                 .HasConstraintName("FK_Candidates_Users");
         });
 
-        modelBuilder.Entity<CandidateSubmission>(entity =>
-        {
-            entity.HasKey(e => e.SubmissionId).HasName("PK__Candidat__9B535595709F9588");
-
-            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
-            entity.Property(e => e.SubmissionDate).HasDefaultValueSql("(getdate())");
-
-            entity.HasOne(d => d.Candidate).WithMany(p => p.CandidateSubmissions)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Submission_Candidate");
-
-            entity.HasOne(d => d.Recruiter).WithMany(p => p.CandidateSubmissions)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Submission_Recruiter");
-        });
-
         modelBuilder.Entity<Interview>(entity =>
         {
             entity.HasKey(e => e.InterviewId).HasName("PK__Intervie__141E55524DF1C27A");
@@ -100,10 +86,35 @@ public partial class RecruitMgmtDbContext : DbContext
                 .HasConstraintName("FK_Notes_User");
         });
 
+        modelBuilder.Entity<Recruiter>(entity =>
+        {
+            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Recruiters)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Recruiters_Users");
+        });
+
         modelBuilder.Entity<Role>(entity =>
         {
             entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
+        });
+
+        modelBuilder.Entity<Submission>(entity =>
+        {
+            entity.HasKey(e => e.SubmissionId).HasName("PK__Candidat__9B535595709F9588");
+
+            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.SubmissionDate).HasDefaultValueSql("(getdate())");
+
+            entity.HasOne(d => d.Candidate).WithMany(p => p.Submissions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Submission_Candidate");
+
+            entity.HasOne(d => d.Recruiter).WithMany(p => p.Submissions)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Submissions_Recruiter");
         });
 
         modelBuilder.Entity<SubmissionStatusHistory>(entity =>

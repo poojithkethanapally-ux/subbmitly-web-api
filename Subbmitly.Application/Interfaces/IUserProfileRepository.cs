@@ -5,7 +5,7 @@ namespace Subbmitly.Application.Interfaces
 {
     public interface IUserProfileRepository
     {
-        Task<List<User>> GetUserInfo();
+        Task<List<UserResponse>> GetUserInfo();
 
         Task<bool> CreateUserAsync(CreateUserRequest request);
     }
