@@ -1,7 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using Subbmitly.Application.DTOs;
 using Subbmitly.Application.Interfaces;
-using Subbmitly.Domain.Entities;
 
 namespace Subbmitly.Application.Services
 {
@@ -14,10 +12,14 @@ namespace Subbmitly.Application.Services
             _submissionRepository = submissionRepository;
         }
 
+        public async Task<List<SubmissionResponse>> GetSubmissions()
+        {
+            return await _submissionRepository.GetSubmissions();
+        }
+
         public async Task<bool> CreateSubmissionAsync(CreateSubmissionRequest request)
         {
             return await _submissionRepository.CreateSubmissionAsync(request);
         }
-
     }
 }

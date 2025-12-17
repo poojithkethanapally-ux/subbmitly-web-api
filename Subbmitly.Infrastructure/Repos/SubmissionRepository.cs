@@ -17,69 +17,37 @@ namespace Subbmitly.Infrastructure.Repos
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        //public async Task<List<SubmissionResponse>> GetSubmissions()
-        //{
-        //    var submissions = await _context.CandidateSubmissions
-        //        .Include(s => s.Candidate)
-        //            .ThenInclude(c => c.User)
-        //        .Include(s => s.Recruiter)
-        //        .ToListAsync();
+        public async Task<List<SubmissionResponse>> GetSubmissions()
+        {
+            var submissions = await _context.Submissions
+                .Include(s => s.Candidate)
+                    .ThenInclude(c => c.User)
+                .Include(s => s.Recruiter)
+                    .ThenInclude(r => r.User)
+                .ToListAsync();
 
-        //    var result = submissions.Select(s => new SubmissionResponse
-        //    {
-        //        SubmissionId = s.SubmissionId,
-        //        CandidateId = s.CandidateId,
-        //        CandidateName = s.Candidate?.User?.FullName,
-        //        RecruiterId = s.RecruiterId,
-        //        RecruiterName = s.Recruiter?.FullName,
-        //        ClientName = s.ClientName,
-        //        VendorName = s.VendorName,
-        //        JobTitle = s.JobTitle,
-        //        JobDescription = s.JobDescription,
-        //        RequiredSkills = s.RequiredSkills,
-        //        Rate = s.Rate,
-        //        Location = s.Location,
-        //        EmploymentType = s.EmploymentType,
-        //        SubmissionDate = s.SubmissionDate,
-        //        CurrentStatus = s.CurrentStatus,
-        //        CreatedDate = s.CreatedDate
-        //    }).ToList();
+            var result = submissions.Select(s => new SubmissionResponse
+            {
+                SubmissionId = s.SubmissionId,
+                CandidateId = s.CandidateId,
+                CandidateName = s.Candidate?.User?.FullName,
+                RecruiterId = s.RecruiterId,
+                RecruiterName = s.Recruiter?.User?.FullName,
+                ClientName = s.ClientName,
+                VendorName = s.VendorName,
+                JobTitle = s.JobTitle,
+                JobDescription = s.JobDescription,
+                RequiredSkills = s.RequiredSkills,
+                Rate = s.Rate,
+                Location = s.Location,
+                EmploymentType = s.EmploymentType,
+                SubmissionDate = s.SubmissionDate,
+                CurrentStatus = s.CurrentStatus,
+                CreatedDate = s.CreatedDate
+            }).ToList();
 
-        //    return result;
-        //}
-
-        //public async Task<bool> CreateSubmissionAsync(CreateSubmissionRequest request)
-        //{
-        //    // Validate related entities exist
-        //    var candidateExists = await _context.Candidates.AnyAsync(c => c.CandidateId == request.CandidateId);
-        //    if (!candidateExists)
-        //        throw new Exception("Candidate not found.");
-
-        //    var recruiterExists = await _context.Users.AnyAsync(u => u.UserId == request.RecruiterId);
-        //    if (!recruiterExists)
-        //        throw new Exception("Recruiter (user) not found.");
-
-        //    var submission = new CandidateSubmission
-        //    {
-        //        CandidateId = request.CandidateId,
-        //        RecruiterId = request.RecruiterId,
-        //        ClientName = request.ClientName,
-        //        VendorName = request.VendorName,
-        //        JobTitle = request.JobTitle,
-        //        JobDescription = request.JobDescription,
-        //        RequiredSkills = request.RequiredSkills,
-        //        Rate = request.Rate,
-        //        Location = request.Location,
-        //        EmploymentType = request.EmploymentType,
-        //        CurrentStatus = request.CurrentStatus,
-        //        SubmissionDate = request.SubmissionDate ?? DateTime.Now,
-        //        CreatedDate = DateTime.Now
-        //    };
-
-        //    _context.CandidateSubmissions.Add(submission);
-        //    await _context.SaveChangesAsync();
-        //    return true;
-        //}
+            return result;
+        }
 
         public async Task<bool> CreateSubmissionAsync(CreateSubmissionRequest request)
         {
@@ -96,7 +64,6 @@ namespace Subbmitly.Infrastructure.Repos
                     VendorContactName = request.VendorContactName,
                     VendorContactEmail = request.VendorContactEmail,
                     VendorContactPhone = request.VendorContactPhone,
-                    //ImplementationPartnerName = request.ImplementationPartner,
                     JobTitle = request.JobTitle,
                     JobDescription = request.JobDescription,
                     RequiredSkills = request.RequiredSkills,
@@ -111,12 +78,12 @@ namespace Subbmitly.Infrastructure.Repos
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex,
-           "Error creating submission for CandidateId {CandidateId} and RecruiterId {RecruiterId}",
-           request.CandidateId,
-           request.RecruiterId);
+                    "Error creating submission for CandidateId {CandidateId} and RecruiterId {RecruiterId}",
+                    request.CandidateId,
+                    request.RecruiterId);
                 return false;
             }
         }
